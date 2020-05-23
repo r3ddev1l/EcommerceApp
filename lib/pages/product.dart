@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Product extends StatelessWidget {
+class ProductPage extends StatelessWidget {
   final String title;
   final String imageUrl;
 
-  Product(this.title, this.imageUrl);
+  ProductPage(this.title, this.imageUrl);
+
+  _showWarningDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Are your Sure?'),
+            content: Text('This action cannot be undone!'),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Discard')),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context, true);
+                  },
+                  child: Text('Continue')),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +56,7 @@ class Product extends StatelessWidget {
               child: RaisedButton(
                 child: Text('Delete'),
                 color: Theme.of(context).accentColor,
-                onPressed: () {
-                  Navigator.pop(context, true);
-                },
+                onPressed: () => _showWarningDialog(context),
               ),
             ),
           ],
