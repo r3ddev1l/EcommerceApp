@@ -1,21 +1,92 @@
 import 'package:flutter/material.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  String _emailValue, _passwordValue;
+
+  bool _isAcceptTerms = false;
+
+  DecorationImage _buildBackgroundImage() {
+    return DecorationImage(
+      fit: BoxFit.cover,
+      colorFilter:
+          ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
+      image: AssetImage('assets/background.jpg'),
+    );
+  }
+
+  TextField _buildEmailTextField() {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: 'E-mail', filled: true, fillColor: Colors.white),
+      onChanged: (value) {
+        _emailValue = value;
+      },
+    );
+  }
+
+  TextField _buildPasswordTextField() {
+    return TextField(
+      decoration: InputDecoration(
+          labelText: 'Password', filled: true, fillColor: Colors.white),
+      onChanged: (value) {
+        _passwordValue = value;
+      },
+    );
+  }
+
+  SwitchListTile _buildAcceptSwitch() {
+    return SwitchListTile(
+        title: Text('Accept Terms'),
+        value: _isAcceptTerms,
+        onChanged: (value) {
+          setState(() {
+            _isAcceptTerms = value;
+          });
+        });
+  }
+
+  void _submitForm() {
+    Navigator.pushReplacementNamed(context, '/products');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/');
-          },
-          child: Text('Login'),
+        appBar: AppBar(
+          title: Text('Login'),
         ),
-//          startingProduct: 'Food Tester',
-      ),
-    );
+        body: Container(
+          decoration: BoxDecoration(image: _buildBackgroundImage()),
+          padding: EdgeInsets.all(8.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  _buildEmailTextField(),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  _buildPasswordTextField(),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  _buildAcceptSwitch(),
+                  RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    textColor: Colors.white,
+                    onPressed: _submitForm,
+                    child: Text('Login'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }

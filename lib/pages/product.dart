@@ -1,41 +1,44 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:max_flutter_project/widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
   final String title;
   final String imageUrl;
+  final double price;
+  final String description;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this.title, this.imageUrl, this.price, this.description);
 
-  _showWarningDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Are your Sure?'),
-            content: Text('This action cannot be undone!'),
-            actions: <Widget>[
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Discard')),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context, true);
-                  },
-                  child: Text('Continue')),
-            ],
-          );
-        });
+  Widget _buildAddressPriceRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'Union Square, San Francisco',
+          style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          child: Text(
+            '|',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+        Text(
+          '\$' + price.toString(),
+          style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        print('object');
+        print('Back button pressed!');
         Navigator.pop(context, false);
         return Future.value(false);
       },
@@ -47,18 +50,18 @@ class ProductPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(imageUrl),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(title),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: TitleDefault(title),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: Text('Delete'),
-                color: Theme.of(context).accentColor,
-                onPressed: () => _showWarningDialog(context),
+            _buildAddressPriceRow(),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                description,
+                textAlign: TextAlign.center,
               ),
-            ),
+            )
           ],
         ),
       ),
