@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:max_flutter_project/widgets/products/address_tag.dart';
 import 'package:max_flutter_project/widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
@@ -15,10 +16,7 @@ class ProductPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          'Union Square, San Francisco',
-          style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
-        ),
+        AddressTag('KTM, Old Baneshowr'),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           child: Text(
