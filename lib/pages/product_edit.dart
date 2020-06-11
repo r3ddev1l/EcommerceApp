@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:max_flutter_project/models/product.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
-  final Map<String, dynamic> product;
+  final Product product;
   final int productIndex;
 
   ProductEditPage(
@@ -24,7 +25,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   _buildTitleTextField() {
     return TextFormField(
-      initialValue: widget.product == null ? '' : widget.product['title'],
+      initialValue: widget.product == null ? '' : widget.product.title,
       decoration: InputDecoration(
         labelText: 'Title',
       ),
@@ -42,7 +43,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   _buildDescTextField() {
     return TextFormField(
-      initialValue: widget.product == null ? '' : widget.product['description'],
+      initialValue: widget.product == null ? '' : widget.product.description,
       decoration: InputDecoration(
         labelText: 'Product Description',
       ),
@@ -62,7 +63,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   _buildPriceTextField() {
     return TextFormField(
       initialValue:
-          widget.product == null ? '' : widget.product['price'].toString(),
+          widget.product == null ? '' : widget.product.price.toString(),
       decoration: InputDecoration(
         labelText: 'Product Price',
       ),
@@ -86,20 +87,29 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
     _formKey.currentState.save();
     if (widget.product == null) {
-      widget.addProduct(_formData);
+      widget.addProduct(Product(
+          title: _formData['title'],
+          description: _formData['description'],
+          image: _formData['image'],
+          price: _formData['price']));
     } else {
-      widget.updateProduct(widget.productIndex, _formData);
+      widget.updateProduct(
+          widget.productIndex,
+          Product(
+              title: _formData['title'],
+              description: _formData['description'],
+              image: _formData['image'],
+              price: _formData['price']));
     }
 
     Navigator.pushReplacementNamed(context, '/products');
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildPageContent(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550 ? 500 : deviceWidth * .95;
     final double targetPadding = deviceWidth - targetWidth;
-    final Widget pageContent = GestureDetector(
+    return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
@@ -126,6 +136,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Widget pageContent = _buildPageContent(context);
     return widget.product == null
         ? pageContent
         : Scaffold(
