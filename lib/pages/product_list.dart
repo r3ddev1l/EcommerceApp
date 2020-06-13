@@ -1,35 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:max_flutter_project/models/product.dart';
 import 'package:max_flutter_project/pages/product_edit.dart';
+import 'package:max_flutter_project/scoped_models/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Product> products;
-  final Function updateProduct;
-  final Function deleteProduct;
-
-  ProductListPage(this.products, this.updateProduct, this.deleteProduct);
-
-  Widget _buildListTile(BuildContext context, int index) {
-    return ListTile(
-        leading:
-            CircleAvatar(backgroundImage: AssetImage(products[index].image)),
-        title: Text(products[index].title),
-        subtitle: Text('\$' + products[index].price.toString()),
-        trailing: _buildEditButton(context, index));
-  }
-
-  Widget _buildEditButton(BuildContext context, int index) {
+  Widget _buildEditButton(
+      BuildContext context, int index, ProductsModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
+        model.selectProduct(index);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext contex) {
-              return ProductEditPage(
-                product: products[index],
-                updateProduct: updateProduct,
-                productIndex: index,
-              );
+            builder: (BuildContext context) {
+              return ProductEditPage();
             },
           ),
         );
@@ -39,28 +23,37 @@ class ProductListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Dismissible(
-          background: Container(
-            color: Colors.red,
-            child: Icon(
-              Icons.delete_forever,
-              color: Colors.white,
+    return ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget child, ProductsModel model) {
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Dismissible(
+            background: Container(
+              color: Colors.red,
             ),
-          ),
-          key: Key(products[index].title),
-          onDismissed: (DismissDirection direction) {
-            if (direction == DismissDirection.endToStart) {
-              deleteProduct(index);
-            }
-          },
-          child: Column(
-            children: <Widget>[_buildListTile(context, index), Divider()],
-          ),
-        );
-      },
-      itemCount: products.length,
-    );
+            key: Key(model.products[index].title),
+            onDismissed: (DismissDirection direction) {
+              if (direction == DismissDirection.endToStart) {
+                model.selectProduct(index);
+                model.deleteProduct();
+              }
+            },
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: CircleAvatar(
+                      backgroundImage: AssetImage(model.products[index].image)),
+                  title: Text(model.products[index].title),
+                  subtitle: Text('\$' + model.products[index].price.toString()),
+                  trailing: _buildEditButton(context, index, model),
+                ),
+                Divider()
+              ],
+            ),
+          );
+        },
+        itemCount: model.products.length,
+      );
+    });
   }
 }
