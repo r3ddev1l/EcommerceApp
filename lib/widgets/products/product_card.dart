@@ -65,7 +65,8 @@ class ProductCard extends StatelessWidget {
         children: <Widget>[
           Image.asset(product.image),
           _buildTitlePriceRow(),
-          AddressTag('KTM, Old Baneshower'),
+          AddressTag('KTM, Old Baneshowr'),
+          Text(product.userEmail),
           _buildActionsButton(context)
         ],
       ),

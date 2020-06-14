@@ -1,10 +1,8 @@
 import 'package:max_flutter_project/models/user.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:max_flutter_project/scoped_models/connected_products.dart';
 
-class UserModel extends Model {
-  User _authenticatedUser;
-
+class UserModel extends ConnectedProductsModel {
   void login(String email, String password) {
-    _authenticatedUser = User(id: '1', email: email, password: password);
+    authenticatedUser = User(id: '1', email: email, password: password);
   }
 }
