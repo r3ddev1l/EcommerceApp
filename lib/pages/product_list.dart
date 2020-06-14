@@ -30,7 +30,7 @@ class ProductListPage extends StatelessWidget {
             background: Container(
               color: Colors.red,
             ),
-            key: Key(model.products[index].title),
+            key: Key(model.allProducts[index].title),
             onDismissed: (DismissDirection direction) {
               if (direction == DismissDirection.endToStart) {
                 model.selectProduct(index);
