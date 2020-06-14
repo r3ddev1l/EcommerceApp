@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:max_flutter_project/scoped_models/main.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -6,11 +8,13 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue, _passwordValue;
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'acceptTerms': false
+  };
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
-  bool _isAcceptTerms = false;
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -35,7 +39,7 @@ class _AuthPageState extends State<AuthPage> {
       decoration: InputDecoration(
           labelText: 'E-mail', filled: true, fillColor: Colors.white),
       onChanged: (value) {
-        _emailValue = value;
+        _formData['email'] = value;
       },
     );
   }
@@ -45,14 +49,14 @@ class _AuthPageState extends State<AuthPage> {
       obscureText: true,
       validator: (String value) {
         if (value.length < 5) {
-          return 'Password length must be greater than 5';
+          return 'Invalid Password';
         }
         return null;
       },
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
       onChanged: (value) {
-        _passwordValue = value;
+        _formData['password'] = value;
       },
     );
   }
@@ -60,17 +64,21 @@ class _AuthPageState extends State<AuthPage> {
   SwitchListTile _buildAcceptSwitch() {
     return SwitchListTile(
         title: Text('Accept Terms'),
-        value: _isAcceptTerms,
+        value: _formData['acceptTerms'],
         onChanged: (value) {
           setState(() {
-            _isAcceptTerms = value;
+            _formData['acceptTerms'] = value;
           });
         });
   }
 
-  void _submitForm() {
-    if (_formkey.currentState.validate() && _isAcceptTerms)
-      Navigator.pushReplacementNamed(context, '/products');
+  void _submitForm(Function login) {
+    if (!_formkey.currentState.validate() || !_formData['acceptTerms']) {
+      return;
+    }
+    _formkey.currentState.save();
+    login(_formData['email'], _formData['password']);
+    Navigator.pushReplacementNamed(context, '/products');
   }
 
   @override
@@ -101,11 +109,15 @@ class _AuthPageState extends State<AuthPage> {
                         height: 8.0,
                       ),
                       _buildAcceptSwitch(),
-                      RaisedButton(
-                        textColor: Colors.white,
-                        onPressed: _submitForm,
-                        child: Text('Login'),
-                      ),
+                      ScopedModelDescendant<MainModel>(builder:
+                          (BuildContext context, Widget child,
+                              MainModel model) {
+                        return RaisedButton(
+                          textColor: Colors.white,
+                          onPressed: () => _submitForm(model.login),
+                          child: Text('Login'),
+                        );
+                      })
                     ],
                   ),
                 ),
