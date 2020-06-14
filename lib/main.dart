@@ -3,7 +3,7 @@ import 'package:max_flutter_project/pages/auth.dart';
 import 'package:max_flutter_project/pages/product.dart';
 import 'package:max_flutter_project/pages/products.dart';
 import 'package:max_flutter_project/pages/products_admin.dart';
-import 'package:max_flutter_project/scoped_models/products.dart';
+import 'package:max_flutter_project/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() => runApp(MyApp());
@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductsModel>(
-        model: ProductsModel(),
+    return ScopedModel<MainModel>(
+        model: MainModel(),
         child: MaterialApp(
           theme: ThemeData(
             primarySwatch: Colors.red,

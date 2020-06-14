@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:max_flutter_project/scoped_models/products.dart';
+import 'package:max_flutter_project/scoped_models/main.dart';
 import 'package:max_flutter_project/widgets/products/products.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -30,8 +30,8 @@ class ProductsPage extends StatelessWidget {
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
         actions: <Widget>[
-          ScopedModelDescendant<ProductsModel>(
-            builder: (BuildContext context, Widget child, ProductsModel model) {
+          ScopedModelDescendant<MainModel>(
+            builder: (BuildContext context, Widget child, MainModel model) {
               return IconButton(
                 icon: Icon(model.displayFavoritesOnly
                     ? Icons.favorite

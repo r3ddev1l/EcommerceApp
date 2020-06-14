@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:max_flutter_project/models/product.dart';
-import 'package:max_flutter_project/scoped_models/products.dart';
+import 'package:max_flutter_project/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductEditPage extends StatefulWidget {
@@ -99,8 +99,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildSubmitButton() {
-    return ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
       return RaisedButton(
         textColor: Colors.white,
         onPressed: () => _submitForm(
@@ -141,18 +141,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget child, ProductsModel model) {
-      final Widget pageContent =
-          _buildPageContent(context, model.selectedProduct);
-      return model.selectedProductIndex == null
-          ? pageContent
-          : Scaffold(
-              appBar: AppBar(
-                title: Text('Edit Product'),
-              ),
-              body: pageContent,
-            );
-    });
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        final Widget pageContent =
+            _buildPageContent(context, model.selectedProduct);
+        return model.selectedProductIndex == null
+            ? pageContent
+            : Scaffold(
+                appBar: AppBar(
+                  title: Text('Edit Product'),
+                ),
+                body: pageContent,
+              );
+      },
+    );
   }
 }
