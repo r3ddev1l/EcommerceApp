@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:max_flutter_project/models/auth.dart';
 import 'package:max_flutter_project/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-enum AuthMode { Signup, Login }
 
 class AuthPage extends StatefulWidget {
   @override
@@ -91,35 +90,34 @@ class _AuthPageState extends State<AuthPage> {
         });
   }
 
-  void _submitForm(Function login, Function signup) async {
+  void _submitForm(Function authenticate) async {
     if (!_formkey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
     _formkey.currentState.save();
-    if (_authMode == AuthMode.Login) {
-      login(_formData['email'], _formData['password']);
+    Map<String, dynamic> successInformation;
+
+    successInformation = await authenticate(
+        _formData['email'], _formData['password'], _authMode);
+
+    if (successInformation['success']) {
+      Navigator.pushReplacementNamed(context, '/products');
     } else {
-      final Map<String, dynamic> successInformation =
-          await signup(_formData['email'], _formData['password']);
-      if (successInformation['success']) {
-        Navigator.pushReplacementNamed(context, '/products');
-      } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('An Error Occurred!'),
-                content: Text(successInformation['message']),
-                actions: <Widget>[
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Okay'))
-                ],
-              );
-            });
-      }
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('An Error Occurred!'),
+              content: Text(successInformation['message']),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Okay'))
+              ],
+            );
+          });
     }
   }
 
@@ -175,7 +173,7 @@ class _AuthPageState extends State<AuthPage> {
                             : RaisedButton(
                                 textColor: Colors.white,
                                 onPressed: () =>
-                                    _submitForm(model.login, model.signup),
+                                    _submitForm(model.authenticate),
                                 child: Text(_authMode == AuthMode.Login
                                     ? 'Login'
                                     : 'Signup'),
