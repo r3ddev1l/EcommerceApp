@@ -42,7 +42,7 @@ class _AuthPageState extends State<AuthPage> {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           labelText: 'E-mail', filled: true, fillColor: Colors.white),
-      onChanged: (value) {
+      onSaved: (value) {
         _formData['email'] = value;
       },
     );
@@ -53,20 +53,20 @@ class _AuthPageState extends State<AuthPage> {
       controller: _passwordTextController,
       obscureText: true,
       validator: (String value) {
-        if (value.length < 5) {
+        if (value.length < 6) {
           return 'Invalid Password';
         }
         return null;
       },
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
-      onChanged: (value) {
+      onSaved: (value) {
         _formData['password'] = value;
       },
     );
   }
 
-  TextFormField _buildPassowrdConfirmTextField() {
+  TextFormField _buildPasswordConfirmTextField() {
     return TextFormField(
       validator: (String value) {
         if (_passwordTextController.text != value) {
@@ -77,9 +77,6 @@ class _AuthPageState extends State<AuthPage> {
       obscureText: true,
       decoration: InputDecoration(
           labelText: 'Confirm Password', filled: true, fillColor: Colors.white),
-      onChanged: (value) {
-        _formData['email'] = value;
-      },
     );
   }
 
@@ -94,13 +91,20 @@ class _AuthPageState extends State<AuthPage> {
         });
   }
 
-  void _submitForm(Function login) {
+  void _submitForm(Function login, Function signup) async {
     if (!_formkey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
     _formkey.currentState.save();
-    login(_formData['email'], _formData['password']);
-    Navigator.pushReplacementNamed(context, '/products');
+    if (_authMode == AuthMode.Login) {
+      login(_formData['email'], _formData['password']);
+    } else {
+      final Map<String, dynamic> successInformation =
+          await signup(_formData['email'], _formData['password']);
+      if (successInformation['success']) {
+        Navigator.pushReplacementNamed(context, '/products');
+      }
+    }
   }
 
   @override
@@ -131,7 +135,7 @@ class _AuthPageState extends State<AuthPage> {
                         height: 8.0,
                       ),
                       _authMode == AuthMode.Signup
-                          ? _buildPassowrdConfirmTextField()
+                          ? _buildPasswordConfirmTextField()
                           : Container(),
                       SizedBox(
                         height: 8.0,
@@ -152,7 +156,8 @@ class _AuthPageState extends State<AuthPage> {
                               MainModel model) {
                         return RaisedButton(
                           textColor: Colors.white,
-                          onPressed: () => _submitForm(model.login),
+                          onPressed: () =>
+                              _submitForm(model.login, model.signup),
                           child: Text('Login'),
                         );
                       })
