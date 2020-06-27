@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:max_flutter_project/scoped_models/main.dart';
 import 'package:max_flutter_project/widgets/products/products.dart';
+import 'package:max_flutter_project/widgets/ui_elements/side_drawer_list_tile.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -31,7 +32,9 @@ class _ProductsPageState extends State<ProductsPage> {
             onTap: () {
               Navigator.pushReplacementNamed(context, '/admin');
             },
-          )
+          ),
+          Divider(),
+          LogoutListTile()
         ],
       ),
     );
