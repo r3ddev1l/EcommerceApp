@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class PriceTag extends StatelessWidget {
-  String price;
+  final String price;
 
   PriceTag(this.price);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.circular(4.0),
-      ),
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.circular(5.0)),
       child: Text(
-        '\$ $price',
+        '\$$price',
         style: TextStyle(color: Colors.white),
       ),
     );

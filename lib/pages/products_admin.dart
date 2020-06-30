@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:max_flutter_project/pages/product_edit.dart';
-import 'package:max_flutter_project/pages/product_list.dart';
-import 'package:max_flutter_project/scoped_models/main.dart';
-import 'package:max_flutter_project/widgets/ui_elements/side_drawer_list_tile.dart';
+
+import './product_edit.dart';
+import './product_list.dart';
+import '../widgets/ui_elements/logout_list_tile.dart';
+import '../scoped-models/main.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   final MainModel model;
@@ -18,10 +19,10 @@ class ProductsAdminPage extends StatelessWidget {
             title: Text('Choose'),
           ),
           ListTile(
-            leading: Icon(Icons.shopping_basket),
+            leading: Icon(Icons.shop),
             title: Text('All Products'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/products');
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
           Divider(),

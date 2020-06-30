@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:max_flutter_project/scoped_models/main.dart';
-import 'package:max_flutter_project/widgets/products/products.dart';
-import 'package:max_flutter_project/widgets/ui_elements/side_drawer_list_tile.dart';
+
 import 'package:scoped_model/scoped_model.dart';
+
+import '../widgets/products/products.dart';
+import '../widgets/ui_elements/logout_list_tile.dart';
+import '../scoped-models/main.dart';
 
 class ProductsPage extends StatefulWidget {
   final MainModel model;
+
   ProductsPage(this.model);
+
   @override
-  _ProductsPageState createState() => _ProductsPageState();
+  State<StatefulWidget> createState() {
+    return _ProductsPageState();
+  }
 }
 
 class _ProductsPageState extends State<ProductsPage> {
@@ -28,7 +34,7 @@ class _ProductsPageState extends State<ProductsPage> {
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text('Manage Product'),
+            title: Text('Manage Products'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/admin');
             },
@@ -42,15 +48,16 @@ class _ProductsPageState extends State<ProductsPage> {
 
   Widget _buildProductsList() {
     return ScopedModelDescendant(
-        builder: (BuildContext context, Widget child, MainModel model) {
-      Widget content = Center(child: Text('No products found!'));
-      if (model.displayedProducts.length > 0 && !model.isLoading) {
-        content = Products();
-      } else if (model.isLoading) {
-        content = Center(child: CircularProgressIndicator());
-      }
-      return RefreshIndicator(onRefresh: model.fetchProducts, child: content);
-    });
+      builder: (BuildContext context, Widget child, MainModel model) {
+        Widget content = Center(child: Text('No Products Found!'));
+        if (model.displayedProducts.length > 0 && !model.isLoading) {
+          content = Products();
+        } else if (model.isLoading) {
+          content = Center(child: CircularProgressIndicator());
+        }
+        return RefreshIndicator(onRefresh: model.fetchProducts, child: content,) ;
+      },
+    );
   }
 
   @override
@@ -58,6 +65,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
+        title: Text('EasyList'),
         actions: <Widget>[
           ScopedModelDescendant<MainModel>(
             builder: (BuildContext context, Widget child, MainModel model) {
@@ -70,9 +78,8 @@ class _ProductsPageState extends State<ProductsPage> {
                 },
               );
             },
-          ),
+          )
         ],
-        title: Text('EasyList'),
       ),
       body: _buildProductsList(),
     );

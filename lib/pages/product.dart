@@ -1,19 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:max_flutter_project/models/product.dart';
-import 'package:max_flutter_project/widgets/products/address_tag.dart';
-import 'package:max_flutter_project/widgets/ui_elements/title_default.dart';
+
+import '../models/product.dart';
+import '../widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
   final Product product;
+
   ProductPage(this.product);
 
   Widget _buildAddressPriceRow(double price) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AddressTag('KTM, Old Baneshowr'),
+        Text(
+          'Old Baneshowr, Kathmandu',
+          style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+        ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 5.0),
           child: Text(
@@ -24,7 +28,7 @@ class ProductPage extends StatelessWidget {
         Text(
           '\$' + price.toString(),
           style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
-        ),
+        )
       ],
     );
   }
@@ -45,10 +49,10 @@ class ProductPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             FadeInImage(
-              height: 300,
+              image: NetworkImage(product.image),
+              height: 300.0,
               fit: BoxFit.cover,
               placeholder: AssetImage('assets/food.jpg'),
-              image: NetworkImage(product.image),
             ),
             Container(
               padding: EdgeInsets.all(10.0),
