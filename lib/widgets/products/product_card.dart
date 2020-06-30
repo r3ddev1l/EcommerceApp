@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:scoped_model/scoped_model.dart';
 
-import './address_tag.dart';
 import './price_tag.dart';
+import './address_tag.dart';
+import '../ui_elements/title_default.dart';
 import '../../models/product.dart';
 import '../../scoped-models/main.dart';
-import '../ui_elements/title_default.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -38,8 +39,9 @@ class ProductCard extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.info),
                 color: Theme.of(context).accentColor,
-                onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + model.allProducts[productIndex].id),
+                onPressed: () => Navigator
+                        .pushNamed<bool>(context,
+                            '/product/' + model.allProducts[productIndex].id),
               ),
               IconButton(
                 icon: Icon(model.allProducts[productIndex].isFavorite
@@ -68,7 +70,7 @@ class ProductCard extends StatelessWidget {
             placeholder: AssetImage('assets/food.jpg'),
           ),
           _buildTitlePriceRow(),
-          AddressTag('Old Baneshowr, Kathmandu'),
+          AddressTag('Union Square, San Francisco'),
           Text(product.userEmail),
           _buildActionButtons(context)
         ],

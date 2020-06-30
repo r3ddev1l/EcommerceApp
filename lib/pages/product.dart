@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../widgets/ui_elements/title_default.dart';
+import '../models/product.dart';
+import '../scoped-models/main.dart';
 
 class ProductPage extends StatelessWidget {
   final Product product;
@@ -15,7 +18,7 @@ class ProductPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'Old Baneshowr, Kathmandu',
+          'Union Square, San Francisco',
           style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
         ),
         Container(
