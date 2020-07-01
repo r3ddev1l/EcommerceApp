@@ -32,7 +32,8 @@ dependencies:
   http: ^0.12.1
   shared_preferences: ^0.5.7+3
   rxdart: ^0.24.1
-
+  google_maps_flutter: ^0.5.28+1
+  geocoder: ^0.2.1
 
 dev_dependencies:
   flutter_test:
